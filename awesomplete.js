@@ -51,6 +51,9 @@ var _ = function (input, o) {
 		inside: this.container
 	});
 
+	// Gets created by the groups setter:
+	this._ulGroups = null;
+
 	// Bind events
 
 	$.bind(this.input, {
@@ -135,6 +138,30 @@ _.prototype = {
 
 		if (document.activeElement === this.input) {
 			this.evaluate();
+		}
+	},
+
+	set groups(groups) {
+		if (Array.isArray(groups)) {
+			this._groups = groups;
+		}
+		else if (typeof groups === "string" && groups.indexOf(",") > -1) {
+			this._groups = groups.split(/\s*,\s*/);
+		}
+		else {
+			this._groups = [];
+		}
+
+		if(this._groups.length) {
+			this._ulGroups = [];
+			this._groups.forEach(function(groupName,index){
+				var ulGroup = $.create('ul', {
+					'data-group-id': index,
+					innerHTML: groupName
+				});
+				this._ulGroups.push(ulGroup);
+				this.ul.appendChild(ulGroup);
+			}, this);
 		}
 	},
 
@@ -227,7 +254,6 @@ _.prototype = {
 		if (value.length >= this.minChars && this._list.length > 0) {
 			this.index = -1;
 			// Populate list with options that match
-			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
 				.map(function(item) {
@@ -239,14 +265,35 @@ _.prototype = {
 				.sort(this.sort)
 				.slice(0, this.maxItems);
 
-			this.suggestions.forEach(function(text) {
+			if(this._groups && this._groups.length) {
+
+				this._ulGroups.forEach(function (elem) {
+					$.removeChildNodes(elem);
+				}, this)
+
+				this.suggestions.forEach(function(suggestion) {
+					var item = me.item(suggestion.label, suggestion.value);
+					me._ulGroups[suggestion.group].appendChild(item);
+				});
+
+				if (this.suggestions.length === 0) {
+					this.close();
+				} else {
+					this.open();
+				}
+			}
+			else {
+				this.ul.innerHTML = "";
+
+				this.suggestions.forEach(function(text) {
 					me.ul.appendChild(me.item(text, value));
 				});
 
-			if (this.ul.children.length === 0) {
-				this.close();
-			} else {
-				this.open();
+				if (this.ul.children.length === 0) {
+					this.close();
+				} else {
+					this.open();
+				}
 			}
 		}
 		else {
@@ -298,6 +345,7 @@ function Suggestion(data) {
 
 	this.label = o.label || o.value;
 	this.value = o.value;
+	this.group = o.group || null;
 }
 Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
 	get: function() { return this.label.length; }
@@ -365,6 +413,17 @@ $.create = function(tag, o) {
 	}
 
 	return element;
+};
+
+/**
+ * Ignores the textNodes and removes the HTML elements within.
+ * @param  {HTMLElement} element The parent element that needs it children removed.
+ * @return {void}
+ */
+$.removeChildNodes = function (element) {
+	while (element.hasChildNodes()){
+	  element.removeChild(element.lastChild);
+	}
 };
 
 $.bind = function(element, o) {
