@@ -279,6 +279,9 @@ _.prototype = {
 					var item = me.item(suggestion.label, suggestion.value);
 					me._ulGroups[suggestion.group].appendChild(item);
 				});
+				me._ulGroups.forEach(function(ulGroup){
+					(ulGroup.children.length) ? ulGroup.removeAttribute('hidden') : ulGroup.setAttribute('hidden','');
+				});
 
 				if (this.suggestions.length === 0) {
 					this.close();
@@ -349,7 +352,7 @@ function Suggestion(data) {
 
 	this.label = o.label || o.value;
 	this.value = o.value;
-	this.group = o.group || null;
+	this.group = o.group;
 }
 Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
 	get: function() { return this.label.length; }

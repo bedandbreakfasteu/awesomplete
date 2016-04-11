@@ -89,4 +89,42 @@ describe("awesomplete.evaluate", function () {
 			expect(this.subject.index).toBe(-1);
 		});
 	});
+
+	describe("with groups", function () {
+		beforeEach(function () {
+			$.type(this.subject.input, "tre");
+			this.subject.list = [
+				{ label: "Groningen", value: "126783", group: 0 },
+				{ label: "Utrecht", value: "12233", group: 0 },
+				{ label: "Groningen", value: "125656", group: 1 },
+				{ label: "Utrecht", value: "453435", group: 1 },
+				{ label: "Washington", value: "45556", group: 1 }
+			];
+			this.subject.groups = ["Region","City","Country"];
+		});
+
+		it("fills completer with all items grouped", function () {
+			this.subject.evaluate();
+			for (var i = 0; i < this.subject.ul.children.length; i++) {
+				var group = this.subject.ul.children[i];
+				expect(group.tagName).toBe('UL');
+				for (var p = 0; p < group.children.length; p++) {
+				 	expect(group.children[p].tagName).toBe('LI');
+				}
+			}
+		});
+
+		it("hides groups with with no items and show which do have items", function () {
+			this.subject.evaluate();
+			for (var i = 0; i < this.subject.ul.children.length; i++) {
+				var group = this.subject.ul.children[i];
+				if(group.children.length > 0){
+					expect(group.hasAttribute('hidden')).toBe(false);
+				}
+				else {
+					expect(group.hasAttribute('hidden')).toBe(true);
+				}
+			}
+		});
+	});
 });
