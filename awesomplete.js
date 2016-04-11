@@ -106,6 +106,8 @@ var _ = function (input, o) {
 		this.list = this.input.getAttribute("data-list") || o.list || [];
 	}
 
+	this.groups = o.groups;
+
 	_.all.push(this);
 };
 
@@ -153,10 +155,12 @@ _.prototype = {
 		}
 
 		if(this._groups.length) {
+			$.removeChildNodes(this.ul);
 			this._ulGroups = [];
 			this._groups.forEach(function(groupName,index){
 				var ulGroup = $.create('ul', {
 					'data-group-id': index,
+					'role': 'group',
 					innerHTML: groupName
 				});
 				this._ulGroups.push(ulGroup);
