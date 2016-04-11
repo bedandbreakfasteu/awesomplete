@@ -1,0 +1,33 @@
+<input id="no-options" class="simple-input" />
+
+<input id="with-data-list" data-list="#data-list" />
+<ul id="data-list">
+	<li data-group-id="0" role="group">
+		Regions
+		<ul>
+			<li>Utrecht</li>
+			<li>Groningen</li>
+			<li>Essex</li>
+			<li>Washington</li>
+		</ul>
+	</li>
+	<li data-group-id="1" role="group">
+		Cities
+		<ul>
+			<li>Utrecht</li>
+			<li>Groningen</li>
+			<li>Washington</li>
+		</ul>
+	</li>
+</ul>
+
+<input id="with-data-list" list="list" />
+<datalist id="list" data-groups="Regions,Cities">
+	<option data-group-id="0">Utrecht</option>
+	<option data-group-id="0">Groningen</option>
+	<option data-group-id="0">Essex</option>
+	<option data-group-id="0">Washington</option>
+	<option data-group-id="1">Utrecht</option>
+	<option data-group-id="1">Groningen</option>
+	<option data-group-id="1">Washington</option>
+</datalist>
