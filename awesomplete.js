@@ -161,7 +161,7 @@ _.prototype = {
 				var ulGroup = $.create('ul', {
 					'data-group-id': index,
 					'role': 'group',
-					innerHTML: groupName
+					'data-group-name': groupName
 				});
 				this._ulGroups.push(ulGroup);
 				this.ul.appendChild(ulGroup);
@@ -195,20 +195,20 @@ _.prototype = {
 	},
 
 	next: function () {
-		var count = this.ul.children.length;
+		var count = this.ul.querySelectorAll('li.suggestion').length;
 
 		this.goto(this.index < count - 1? this.index + 1 : -1);
 	},
 
 	previous: function () {
-		var count = this.ul.children.length;
+		var count = this.ul.querySelectorAll('li.suggestion').length;
 
 		this.goto(this.selected? this.index - 1 : count - 1);
 	},
 
 	// Should not be used, highlights specific item without any checks!
 	goto: function (i) {
-		var lis = this.ul.children;
+		var lis = this.ul.querySelectorAll('li.suggestion');
 
 		if (this.selected) {
 			lis[this.index].setAttribute("aria-selected", "false");
@@ -333,7 +333,8 @@ _.ITEM = function (text, input) {
 	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
-		"aria-selected": "false"
+		"aria-selected": "false",
+		'class': 'suggestion'
 	});
 };
 

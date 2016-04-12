@@ -52,5 +52,29 @@ describe("awesomplete.next", function () {
 				expect(this.subject.index).toBe(-1);
 			});
 		});
+
+		describe("with groups and some items found", function () {
+			beforeEach(function () {
+				$.type(this.subject.input, "tre");
+				this.subject.list = [
+					{ label: "Treter", value: "126783", group: 0 },
+					{ label: "Utrecht", value: "12233", group: 0 },
+					{ label: "Groningen", value: "125656", group: 1 },
+					{ label: "Utrecht", value: "453435", group: 1 },
+					{ label: "Washington", value: "45556", group: 1 }
+				];
+				this.subject.groups = ["Region","City","Country"];
+				this.subject.evaluate();
+			});
+
+
+			describe("and last item of group was selected, moving to the next group", function () {
+				it("selects the second item", function () {
+					this.subject.goto(1);
+					this.subject.next();
+					expect(this.subject._ulGroups[1].children[0].getAttribute('aria-selected')).toBe('true');
+				});
+			});
+		});
 	});
 });
