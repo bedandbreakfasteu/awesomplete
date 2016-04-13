@@ -158,13 +158,15 @@ _.prototype = {
 			$.removeChildNodes(this.ul);
 			this._ulGroups = [];
 			this._groups.forEach(function(groupName,index){
-				var ulGroup = $.create('ul', {
+				var ulGroup = $.create('ul');
+				var groupLabel = $.create('li', {
 					'data-group-id': index,
 					'role': 'group',
-					'data-group-name': groupName
+					innerHTML: groupName
 				});
-				this._ulGroups.push(ulGroup);
-				this.ul.appendChild(ulGroup);
+				this._ulGroups.push(groupLabel);
+				this.ul.appendChild(groupLabel);
+				groupLabel.appendChild(ulGroup);
 			}, this);
 		}
 	},
@@ -272,12 +274,12 @@ _.prototype = {
 			if(this._groups && this._groups.length) {
 
 				this._ulGroups.forEach(function (elem) {
-					$.removeChildNodes(elem);
+					$.removeChildNodes(elem.querySelector('ul'));
 				}, this)
 
 				this.suggestions.forEach(function(suggestion) {
 					var item = me.item(suggestion.label, value, suggestion.id);
-					me._ulGroups[suggestion.group].appendChild(item);
+					me._ulGroups[suggestion.group].querySelector('ul').appendChild(item);
 				});
 
 				// re-order suggestion to map with the order they are displayed:
