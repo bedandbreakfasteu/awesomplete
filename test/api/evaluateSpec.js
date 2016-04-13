@@ -107,23 +107,8 @@ describe("awesomplete.evaluate", function () {
 			this.subject.evaluate();
 			for (var i = 0; i < this.subject.ul.children.length; i++) {
 				var group = this.subject.ul.children[i];
-				expect(group.tagName).toBe('UL');
-				for (var p = 0; p < group.children.length; p++) {
-				 	expect(group.children[p].tagName).toBe('LI');
-				}
-			}
-		});
-
-		it("hides groups with with no items and show which do have items", function () {
-			this.subject.evaluate();
-			for (var i = 0; i < this.subject.ul.children.length; i++) {
-				var group = this.subject.ul.children[i];
-				if(group.children.length > 0){
-					expect(group.hasAttribute('hidden')).toBe(false);
-				}
-				else {
-					expect(group.hasAttribute('hidden')).toBe(true);
-				}
+				expect(group.tagName).toBe('LI');
+				expect(group.children[0].tagName).toBe('UL');
 			}
 		});
 	});

@@ -17,8 +17,8 @@ describe("Awesomplete list", function () {
 
 	describe("The HTML list", function () {
 		it("is is made up out of groups", function () {
-			expect(this.subject._ulGroups[0].tagName).toEqual("UL");
-			expect(this.subject._ulGroups[1].tagName).toEqual("UL");
+			expect(this.subject._ulGroups[0].tagName).toEqual("LI");
+			expect(this.subject._ulGroups[1].tagName).toEqual("LI");
 		});
 
 		it("contains for each group node the corresponding data-group-id attribute", function () {

@@ -74,7 +74,7 @@ describe("awesomplete.previous", function () {
 			it("selects the second item", function () {
 				this.subject.goto(2);
 				this.subject.previous();
-				expect(this.subject._ulGroups[0].children[1].getAttribute('aria-selected')).toBe('true');
+				expect(this.subject.ul.querySelectorAll('li.suggestion')[1].getAttribute('aria-selected')).toBe('true');
 			});
 		});
 	});
