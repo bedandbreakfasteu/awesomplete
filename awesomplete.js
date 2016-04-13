@@ -230,7 +230,7 @@ _.prototype = {
 		if (selected) {
 			this.index = $.siblingIndex(selected);
 		} else {
-			selected = this.ul.children[this.index];
+			selected = this.ul.querySelectorAll('li.suggestion')[this.index];
 		}
 
 		if (selected) {
@@ -276,9 +276,19 @@ _.prototype = {
 				}, this)
 
 				this.suggestions.forEach(function(suggestion) {
-					var item = me.item(suggestion.label, suggestion.value);
+					var item = me.item(suggestion.label, value, suggestion.id);
 					me._ulGroups[suggestion.group].appendChild(item);
 				});
+
+				// re-order suggestion to map with the order they are displayed:
+				var suggestionsCopy = this.suggestions.slice();
+				this.suggestions = [].slice.call(this.ul.querySelectorAll('li.suggestion')).map(function (el) {
+					var id = el.getAttribute('data-id');
+					return suggestionsCopy.filter(function (suggestion) {
+						 return (suggestion.id === id);
+					})[0];
+				}, this);
+
 				me._ulGroups.forEach(function(ulGroup){
 					(ulGroup.children.length) ? ulGroup.removeAttribute('hidden') : ulGroup.setAttribute('hidden','');
 				});
@@ -293,7 +303,7 @@ _.prototype = {
 				this.ul.innerHTML = "";
 
 				this.suggestions.forEach(function(text) {
-					me.ul.appendChild(me.item(text, value));
+					me.ul.appendChild(me.item(text, value, text.id));
 				});
 
 				if (this.ul.children.length === 0) {
@@ -329,12 +339,13 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
-_.ITEM = function (text, input) {
+_.ITEM = function (text, input, id) {
 	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false",
-		'class': 'suggestion'
+		'class': 'suggestion',
+		'data-id': id
 	});
 };
 
@@ -351,6 +362,7 @@ function Suggestion(data) {
 	  ? { label: data[0], value: data[1] }
 	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
+	this.id = (Date.now() + Math.floor(Math.random()*1000)).toString();
 	this.label = o.label || o.value;
 	this.value = o.value;
 	this.group = o.group;
