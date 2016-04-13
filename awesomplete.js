@@ -291,8 +291,9 @@ _.prototype = {
 					})[0];
 				}, this);
 
+				// hide groups that have no children.
 				me._ulGroups.forEach(function(ulGroup){
-					(ulGroup.children.length) ? ulGroup.removeAttribute('hidden') : ulGroup.setAttribute('hidden','');
+					(ulGroup.querySelectorAll('li.suggestion').length) ? ulGroup.removeAttribute('hidden') : ulGroup.setAttribute('hidden','');
 				});
 
 				if (this.suggestions.length === 0) {

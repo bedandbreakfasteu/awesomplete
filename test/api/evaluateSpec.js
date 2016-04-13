@@ -111,5 +111,12 @@ describe("awesomplete.evaluate", function () {
 				expect(group.children[0].tagName).toBe('UL');
 			}
 		});
+
+		it("hides groups that have no results", function () {
+			this.subject.evaluate();
+			expect(this.subject._ulGroups[0].querySelectorAll('ul > li.suggestion').length).toBeGreaterThan(0);
+			expect(this.subject._ulGroups[1].querySelectorAll('ul > li.suggestion').length).toBeGreaterThan(0);
+			expect(this.subject._ulGroups[2].querySelectorAll('ul > li.suggestion').length).toBe(0);
+		});
 	});
 });
