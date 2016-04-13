@@ -36,10 +36,6 @@ div.awesomplete > ul:empty {
 	display: none;
 }
 
-div.awesomplete ul[data-group-name]:before {
-	content: attr(data-group-name);
-}
-
 @supports (transform: scale(0)) {
 	div.awesomplete > ul {
 		transition: .3s cubic-bezier(.4,.2,.5,1.4);
@@ -71,18 +67,34 @@ div.awesomplete ul[data-group-name]:before {
 		transform: rotate(45deg);
 	}
 
-	div.awesomplete ul > li {
+	div.awesomplete li[role='group'] {
+		padding: .2em 0;
+	}
+
+	div.awesomplete li[role='group']:before {
+		content: "";
+		padding-left: 0.5em;
+	}
+
+	div.awesomplete li[role='group'] > ul {
+		list-style: none;
+		padding: 0;
+		border-top: 1px solid rgba(0,0,0,.3);
+	}
+
+	div.awesomplete ul > li.suggestion {
 		position: relative;
 		padding: .2em .5em;
 		cursor: pointer;
+		background-color: white;
 	}
 
-	div.awesomplete  ul > li:hover {
+	div.awesomplete  ul > li.suggestion:hover {
 		background: hsl(200, 40%, 80%);
 		color: black;
 	}
 
-	div.awesomplete ul > li[aria-selected="true"] {
+	div.awesomplete ul > li.suggestion[aria-selected="true"] {
 		background: hsl(205, 40%, 40%);
 		color: white;
 	}
@@ -91,11 +103,11 @@ div.awesomplete ul[data-group-name]:before {
 			background: hsl(65, 100%, 50%);
 		}
 
-		div.awesomplete li:hover mark {
+		div.awesomplete li.suggestion:hover mark {
 			background: hsl(68, 100%, 41%);
 		}
 
-		div.awesomplete li[aria-selected="true"] mark {
+		div.awesomplete li.suggestion[aria-selected="true"] mark {
 			background: hsl(86, 100%, 21%);
 			color: inherit;
 		}
