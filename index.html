@@ -435,6 +435,27 @@ Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
 });</script></code></pre>
 	</section>
 
+
+	<section>
+		<h2>Grouped autocomplete</h2>
+		<label>Type or click in the dropdown: <input id="grouped" /></label>
+		<pre class="language-markup"><code>&lt;input /></code></pre>
+		<pre class="language-javascript"><code><script>
+		new Awesomplete(Awesomplete.$('#grouped'), {
+			minChars: 1,
+			list: [
+				{ label: "Treter (3)", value: "Treter", group: 0 },
+				{ label: "Utrecht (3)", value: "Utrecht", group: 0 },
+				{ label: "Groningen (43)", value: "Groningen", group: 1 },
+				{ label: "Utrecht (34)", value: "Utrecht", group: 1 },
+				{ label: "Washington (34)", value: "Washington", group: 1 }
+			],
+			// The group numbers are mapped to the index of the groups array:
+			groups: ["Region","City"]
+		});
+	</script></code></pre>
+	</section>
+
 <section id="download">
 	<h1>Download!</h1>
 
